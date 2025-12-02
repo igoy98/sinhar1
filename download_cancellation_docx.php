@@ -67,7 +67,14 @@ try {
   }
 } catch (Exception $e) { }
 
-$filename = 'persyaratan_pembatalan_' . date('Ymd_His') . '.docx';
+// Generate filename based on alasan
+$alasan_label = match($alasan) {
+  'sakit' => 'sakit',
+  'meninggal' => 'meninggal',
+  'keuangan' => 'keuangan',
+  default => 'umum'
+};
+$filename = 'persyaratan_pembatalan_' . $alasan_label . '_' . date('Ymd_His') . '.docx';
 $tmp = tempnam(sys_get_temp_dir(), 'sinhar_') . '.docx';
 $writer = IOFactory::createWriter($phpWord, 'Word2007');
 $writer->save($tmp);

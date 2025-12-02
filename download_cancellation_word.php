@@ -38,7 +38,14 @@ if (!empty($sudah_bayar) && $sudah_bayar === 'ya') {
   $requirements[] = 'Bukti pembayaran / kwitansi';
 }
 
-$filename = 'persyaratan_pembatalan_' . preg_replace('/[^0-9_]/', '', date('Ymd_His')) . '.doc';
+// Generate filename based on alasan
+$alasan_label = match($alasan) {
+  'sakit' => 'sakit',
+  'meninggal' => 'meninggal',
+  'keuangan' => 'keuangan',
+  default => 'umum'
+};
+$filename = 'persyaratan_pembatalan_' . $alasan_label . '_' . preg_replace('/[^0-9_]/', '', date('Ymd_His')) . '.doc';
 header("Content-Type: application/msword; charset=utf-8");
 header('Content-Disposition: attachment; filename="' . $filename . '"');
 echo "<html><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><body>";

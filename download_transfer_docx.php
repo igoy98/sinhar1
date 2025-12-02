@@ -44,7 +44,15 @@ try {
   }
 } catch (Exception $e) { }
 
-$filename = 'persyaratan_pelimpahan_' . date('Ymd_His') . '.docx';
+// Generate filename based on hubungan
+$hubungan_label = match($hubungan) {
+  'suamiistri' => 'suami_istri',
+  'anak' => 'anak',
+  'saudara' => 'saudara',
+  'lainnya' => 'lainnya',
+  default => 'umum'
+};
+$filename = 'persyaratan_pelimpahan_' . $hubungan_label . '_' . date('Ymd_His') . '.docx';
 $tmp = tempnam(sys_get_temp_dir(), 'sinhar_') . '.docx';
 $writer = IOFactory::createWriter($phpWord, 'Word2007');
 $writer->save($tmp);
