@@ -80,13 +80,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
   <header class="site-header">
     <div class="container">
-      <h1>Sistem Informasi Haji Reguler (SINHAR)</h1>
-      <nav>
-        <a href="index.php">Beranda</a>
-        <a href="cancellation.php">Pembatalan</a>
-        <a href="transfer.php">Pelimpahan</a>
-        <a href="admin.php">Admin</a>
-      </nav>
+      <div class="header-content">
+        <div class="header-logo">
+          <img src="assets/img/logo-kemenag.png" alt="Kementerian Agama">
+        </div>
+        <div class="header-title-group">
+          <h1>Sistem Informasi Haji Reguler (SINHAR)</h1>
+          <nav>
+            <a href="index.php">Beranda</a>
+            <a href="cancellation.php">Pembatalan</a>
+            <a href="transfer.php">Pelimpahan</a>
+            <a href="admin.php">Admin</a>
+          </nav>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -105,18 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="">-- Pilih alasan --</option>
             <option value="sakit">Sakit / Tidak Memungkinkan</option>
             <option value="meninggal">Meninggal</option>
-            <option value="keuangan">Alasan Keuangan</option>
+            <option value="meninggal">Sebab Lain</option>
           </select>
         </div>
 
-        <div class="form-group">
-          <label for="sudah_bayar">Apakah sudah melakukan pembayaran penuh?</label>
-          <select id="sudah_bayar" name="sudah_bayar">
-            <option value="">-- Pilih --</option>
-            <option value="ya">Ya</option>
-            <option value="tidak">Tidak</option>
-          </select>
-        </div>
 
         <button type="submit" class="btn btn-primary">Cek Persyaratan</button>
       </form>
@@ -133,20 +132,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <p class="hint">📌 Catatan: Dokumen dan prosedur bisa berbeda tergantung kebijakan kantor penyelenggara. Silakan verifikasi ke kantor Kemenag setempat.</p>
 
           <div class="btn-group" style="margin-top:20px;">
-            <form method="post" action="download_cancellation_word.php" target="_blank" style="display:inline;">
-              <input type="hidden" name="nama" value="<?php echo htmlspecialchars($_POST['nama'] ?? ''); ?>">
-              <input type="hidden" name="alasan" value="<?php echo htmlspecialchars($_POST['alasan'] ?? ''); ?>">
-              <input type="hidden" name="sudah_bayar" value="<?php echo htmlspecialchars($_POST['sudah_bayar'] ?? ''); ?>">
-              <input type="hidden" name="requirements" value="<?php echo htmlspecialchars(json_encode($result, JSON_UNESCAPED_UNICODE)); ?>">
-              <button type="submit" class="btn">📄 Unduh .DOC</button>
-            </form>
-            <form method="post" action="download_cancellation_docx.php" target="_blank" style="display:inline;">
-              <input type="hidden" name="nama" value="<?php echo htmlspecialchars($_POST['nama'] ?? ''); ?>">
-              <input type="hidden" name="alasan" value="<?php echo htmlspecialchars($_POST['alasan'] ?? ''); ?>">
-              <input type="hidden" name="sudah_bayar" value="<?php echo htmlspecialchars($_POST['sudah_bayar'] ?? ''); ?>">
-              <input type="hidden" name="requirements" value="<?php echo htmlspecialchars(json_encode($result, JSON_UNESCAPED_UNICODE)); ?>">
-              <button type="submit" class="btn btn-primary">📋 Unduh .DOCX</button>
-            </form>
+            <?php
+              require_once __DIR__ . '/config_gdrive.php';
+              $alasan_key = match($_POST['alasan'] ?? '') {
+                'sakit' => 'cancellation_sakit',
+                'meninggal' => 'cancellation_meninggal',
+                'keuangan' => 'cancellation_keuangan',
+                default => 'cancellation_umum'
+              };
+              $gdrive_url = getGDriveLink($alasan_key);
+              if (!empty($gdrive_url)):
+            ?>
+            <a href="<?php echo htmlspecialchars($gdrive_url); ?>" target="_blank" class="btn" style="background:#4285f4;">☁️ Buka Google Drive</a>
+            <?php endif; ?>
           </div>
         </section>
       <?php endif; ?>
@@ -160,3 +158,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="assets/js/main.js"></script>
 </body>
 </html>
+

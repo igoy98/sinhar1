@@ -9,7 +9,15 @@ if (!empty($_POST['requirements'])) {
   if (is_array($decoded)) $requirements = $decoded;
 }
 
-$filename = 'persyaratan_pelimpahan_' . preg_replace('/[^0-9_]/', '', date('Ymd_His')) . '.doc';
+// Generate filename based on hubungan
+$hubungan_label = match($hubungan) {
+  'suamiistri' => 'suami_istri',
+  'anak' => 'anak',
+  'saudara' => 'saudara',
+  'lainnya' => 'lainnya',
+  default => 'umum'
+};
+$filename = 'persyaratan_pelimpahan_' . $hubungan_label . '_' . preg_replace('/[^0-9_]/', '', date('Ymd_His')) . '.doc';
 header("Content-Type: application/msword; charset=utf-8");
 header('Content-Disposition: attachment; filename="' . $filename . '"');
 echo "<html><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><body>";

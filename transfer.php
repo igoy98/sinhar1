@@ -75,13 +75,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
   <header class="site-header">
     <div class="container">
-      <h1>Sistem Informasi Haji Reguler (SINHAR)</h1>
-      <nav>
-        <a href="index.php">Beranda</a>
-        <a href="cancellation.php">Pembatalan</a>
-        <a href="transfer.php">Pelimpahan</a>
-        <a href="admin.php">Admin</a>
-      </nav>
+      <div class="header-content">
+        <div class="header-logo">
+          <img src="assets/img/logo-kemenag.png" alt="Kementerian Agama">
+        </div>
+        <div class="header-title-group">
+          <h1>Sistem Informasi Haji Reguler (SINHAR)</h1>
+          <nav>
+            <a href="index.php">Beranda</a>
+            <a href="cancellation.php">Pembatalan</a>
+            <a href="transfer.php">Pelimpahan</a>
+            <a href="admin.php">Admin</a>
+          </nav>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -98,19 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <label for="hubungan">Hubungan pemberi dan penerima:</label>
           <select id="hubungan" name="hubungan">
             <option value="">-- Pilih hubungan --</option>
-            <option value="suamiistri">Suami / Istri</option>
-            <option value="anak">Anak</option>
-            <option value="saudara">Saudara</option>
-            <option value="lainnya">Lainnya</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="penerima_paspor">Apakah penerima sudah memiliki paspor?</label>
-          <select id="penerima_paspor" name="penerima_paspor">
-            <option value="">-- Pilih --</option>
-            <option value="ya">Ya</option>
-            <option value="tidak">Tidak</option>
+            <option value="wafat">Wafat</option>
+            <option value="sakit">Sakit Permanen</option>
           </select>
         </div>
 
@@ -129,20 +125,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <p class="hint">📌 Catatan: Beberapa dokumen mungkin perlu pengesahan atau verifikasi lebih lanjut di kantor penyelenggara.</p>
 
           <div class="btn-group" style="margin-top:20px;">
-            <form method="post" action="download_transfer_word.php" target="_blank" style="display:inline;">
-              <input type="hidden" name="nama" value="<?php echo htmlspecialchars($_POST['nama'] ?? ''); ?>">
-              <input type="hidden" name="hubungan" value="<?php echo htmlspecialchars($_POST['hubungan'] ?? ''); ?>">
-              <input type="hidden" name="penerima_paspor" value="<?php echo htmlspecialchars($_POST['penerima_paspor'] ?? ''); ?>">
-              <input type="hidden" name="requirements" value="<?php echo htmlspecialchars(json_encode($result, JSON_UNESCAPED_UNICODE)); ?>">
-              <button type="submit" class="btn">📄 Unduh .DOC</button>
-            </form>
-            <form method="post" action="download_transfer_docx.php" target="_blank" style="display:inline;">
-              <input type="hidden" name="nama" value="<?php echo htmlspecialchars($_POST['nama'] ?? ''); ?>">
-              <input type="hidden" name="hubungan" value="<?php echo htmlspecialchars($_POST['hubungan'] ?? ''); ?>">
-              <input type="hidden" name="penerima_paspor" value="<?php echo htmlspecialchars($_POST['penerima_paspor'] ?? ''); ?>">
-              <input type="hidden" name="requirements" value="<?php echo htmlspecialchars(json_encode($result, JSON_UNESCAPED_UNICODE)); ?>">
-              <button type="submit" class="btn btn-primary">📋 Unduh .DOCX</button>
-            </form>
+            
+            <?php
+              require_once __DIR__ . '/config_gdrive.php';
+              $hubungan_key = match($_POST['hubungan'] ?? '') {
+                'suamiistri' => 'transfer_suami_istri',
+                'anak' => 'transfer_anak',
+                'saudara' => 'transfer_saudara',
+                'lainnya' => 'transfer_lainnya',
+                default => 'transfer_umum'
+              };
+              $gdrive_url = getGDriveLink($hubungan_key);
+              if (!empty($gdrive_url)):
+            ?>
+            <a href="<?php echo htmlspecialchars($gdrive_url); ?>" target="_blank" class="btn" style="background:#4285f4;">☁️ Buka Google Drive</a>
+            <?php endif; ?>
           </div>
         </section>
       <?php endif; ?>
@@ -156,3 +153,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="assets/js/main.js"></script>
 </body>
 </html>
+

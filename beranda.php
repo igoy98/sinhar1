@@ -12,13 +12,20 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <h1>Sistem Informasi Haji Reguler (SINHAR)</h1>
-      <nav>
-        <a href="index.php">Beranda</a>
-        <a href="cancellation.php">Pembatalan</a>
-        <a href="transfer.php">Pelimpahan</a>
-        <a href="admin.php">Admin</a>
-      </nav>
+      <div class="header-content">
+        <div class="header-logo">
+          <img src="assets/img/logo-kemenag.png" alt="Kementerian Agama">
+        </div>
+        <div class="header-title-group">
+          <h1>Sistem Informasi Haji Reguler (SINHAR)</h1>
+          <nav>
+            <a href="index.php">Beranda</a>
+            <a href="cancellation.php">Pembatalan</a>
+            <a href="transfer.php">Pelimpahan</a>
+            <a href="admin.php">Admin</a>
+          </nav>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -40,3 +47,4 @@
   <script src="assets/js/main.js"></script>
 </body>
 </html>
+
