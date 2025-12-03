@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="">-- Pilih alasan --</option>
             <option value="sakit">Sakit / Tidak Memungkinkan</option>
             <option value="meninggal">Meninggal</option>
-            <option value="meninggal">Sebab Lain</option>
+            <option value="sebab_lain">Sebab Lain</option>
           </select>
         </div>
 
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               $alasan_key = match($_POST['alasan'] ?? '') {
                 'sakit' => 'cancellation_sakit',
                 'meninggal' => 'cancellation_meninggal',
-                'keuangan' => 'cancellation_keuangan',
+                'sebab_lain' => 'cancellation_sebab_lain',
                 default => 'cancellation_umum'
               };
               $gdrive_url = getGDriveLink($alasan_key);
