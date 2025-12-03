@@ -165,28 +165,24 @@ if (isset($_SESSION['admin'])) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Admin Panel - SINHAR">
-  <title>Admin Panel - SINHAR</title>
+  <title>Admin - Kemenag Nganjuk SINHAR</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <div class="header-content">
+            <div class="header-content">
         <div class="header-logo">
-          <img src="assets/img/logo-kemenag.png" alt="Kementerian Agama" sizeof="32px">
+          <img src="assets/img/logo-kemenag.png" alt="Kementerian Agama">
         </div>
-        <div class="header-title-group">
-          <h1>Sistem Informasi Haji Reguler (SINHAR)</h1>
-          <nav>
-            <a href="index.php">Beranda</a>
-            <a href="cancellation.php">Pembatalan</a>
-            <a href="transfer.php">Pelimpahan</a>
-            <a href="admin.php">Admin</a>
-            <?php if(isset($_SESSION['admin'])): ?>
-              <a href="admin.php?action=logout" style="margin-left:auto;">Logout</a>
-            <?php endif; ?>
-          </nav>
-        </div>
+        <h1>Kemenag Nganjuk - Sistem Informasi Haji Reguler (SINHAR)</h1>
+        <nav>
+          <a href="index.php">Beranda</a>
+          <a href="cancellation.php">Pembatalan</a>
+          <a href="transfer.php">Pelimpahan</a>
+          <a href="admin.php">Admin</a>
+          <a href="logout.php" class="logout-link">Logout</a>
+        </nav>
       </div>
     </div>
   </header>
@@ -311,4 +307,6 @@ if (isset($_SESSION['admin'])) {
   </footer>
 </body>
 </html>
+
+
 

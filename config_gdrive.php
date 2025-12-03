@@ -9,8 +9,10 @@
 $gdrive_links = [
     'cancellation_sakit' => 'https://docs.google.com/document/d/1MRaVi-oiiXWkixbDGQTKr93RIrgjYCVr/edit?usp=sharing&ouid=115230136242235187965&rtpof=true&sd=true',       // Pembatalan - Sakit
     'cancellation_meninggal' => 'https://docs.google.com/document/d/1M96uUp5FWUwOdUSWVbxaHPsEb7zO7Svu/edit?usp=sharing&ouid=115230136242235187965&rtpof=true&sd=true',       // Pembatalan - Meninggal
-    'transfer_suami_istri' => 'https://docs.google.com/document/d/1VujIT9zQgoDxTsXqu0g9GkEbKWXkVst0/edit?usp=sharing&ouid=115230136242235187965&rtpof=true&sd=true',       // Pelimpahan - wafat
-    'transfer_anak' => 'https://docs.google.com/document/d/1VujIT9zQgoDxTsXqu0g9GkEbKWXkVst0/edit?usp=sharing&ouid=115230136242235187965&rtpof=true&sd=true',       // Pelimpahan - sakit
+    'cancellation_keuangan' => '',       // Pembatalan - Keuangan
+    'transfer_wafat' => 'http://drive.google.com/file/d/1VujIT9zQgoDxTsXqu0g9GkEbKWXkVst0/view',       // Pelimpahan - Wafat
+    'transfer_sakit' => 'https://docs.google.com/document/d/1VujIT9zQgoDxTsXqu0g9GkEbKWXkVst0/edit?usp=sharing&ouid=115230136242235187965&rtpof=true&sd=true',       // Pelimpahan - Sakit
+    'transfer_umum' => '',       // Pelimpahan - Umum (fallback)
 ];
 
 /**

@@ -27,8 +27,19 @@ function getTransferRequirements($data) {
     $requirements[] = 'Fotokopi bukti pendaftaran';
   }
 
-  if (!empty($data['hubungan']) && $data['hubungan'] === 'suamiistri') {
-    $requirements[] = 'Fotokopi buku nikah (jika pelimpahan kepada pasangan)';
+  if (!empty($data['alasan'])) {
+    switch($data['alasan']) {
+      case 'wafat':
+        $requirements[] = 'Surat keterangan kematian dari kelurahan/desa';
+        $requirements[] = 'Fotokopi akta kematian (jika ada)';
+        $requirements[] = 'Surat pernyataan ahli waris yang dilegalisir';
+        break;
+      case 'sakit':
+        $requirements[] = 'Surat keterangan sakit dari rumah sakit/klinik';
+        $requirements[] = 'Hasil pemeriksaan medis yang menyatakan tidak mampu melakukan ibadah haji';
+        $requirements[] = 'Rekomendasi dokter untuk tidak melaksanakan haji';
+        break;
+    }
   }
 
   if (!empty($data['penerima_paspor']) && $data['penerima_paspor'] === 'ya') {
@@ -79,15 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="header-logo">
           <img src="assets/img/logo-kemenag.png" alt="Kementerian Agama">
         </div>
-        <div class="header-title-group">
-          <h1>Sistem Informasi Haji Reguler (SINHAR)</h1>
-          <nav>
-            <a href="index.php">Beranda</a>
-            <a href="cancellation.php">Pembatalan</a>
-            <a href="transfer.php">Pelimpahan</a>
-            <a href="admin.php">Admin</a>
-          </nav>
-        </div>
+        <h1>Kemenag Nganjuk - Sistem Informasi Haji Reguler (SINHAR)</h1>
+        <nav>
+          <a href="index.php">Beranda</a>
+          <a href="cancellation.php">Pembatalan</a>
+          <a href="transfer.php">Pelimpahan</a>
+          <a href="admin.php">Admin</a>
+        </nav>
       </div>
     </div>
   </header>
@@ -102,11 +111,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form-group">
-          <label for="hubungan">Hubungan pemberi dan penerima:</label>
-          <select id="hubungan" name="hubungan">
-            <option value="">-- Pilih hubungan --</option>
-            <option value="wafat">Wafat</option>
-            <option value="sakit">Sakit Permanen</option>
+          <label for="alasan">Alasan Pelimpahan:</label>
+          <select id="alasan" name="alasan" required>
+            <option value="">-- Pilih alasan --</option>
+            <option value="wafat">Wafat/Meninggal</option>
+            <option value="sakit">Sakit (Tidak Mampu Melaksanakan Haji)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="penerima_paspor">Apakah penerima sudah memiliki paspor?</label>
+          <select id="penerima_paspor" name="penerima_paspor">
+            <option value="">-- Pilih --</option>
+            <option value="ya">Ya, sudah memiliki</option>
+            <option value="tidak">Tidak, belum memiliki</option>
           </select>
         </div>
 
@@ -128,14 +146,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <?php
               require_once __DIR__ . '/config_gdrive.php';
-              $hubungan_key = match($_POST['hubungan'] ?? '') {
-                'suamiistri' => 'transfer_suami_istri',
-                'anak' => 'transfer_anak',
-                'saudara' => 'transfer_saudara',
-                'lainnya' => 'transfer_lainnya',
+              $alasan_key = match($_POST['alasan'] ?? '') {
+                'wafat' => 'transfer_wafat',
+                'sakit' => 'transfer_sakit',
                 default => 'transfer_umum'
               };
-              $gdrive_url = getGDriveLink($hubungan_key);
+              $gdrive_url = getGDriveLink($alasan_key);
               if (!empty($gdrive_url)):
             ?>
             <a href="<?php echo htmlspecialchars($gdrive_url); ?>" target="_blank" class="btn" style="background:#4285f4;">☁️ Buka Google Drive</a>
