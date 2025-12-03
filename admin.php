@@ -181,7 +181,7 @@ if (isset($_SESSION['admin'])) {
           <a href="cancellation.php">Pembatalan</a>
           <a href="transfer.php">Pelimpahan</a>
           <a href="admin.php">Admin</a>
-          <a href="logout.php" class="logout-link">Logout</a>
+          <a href="admin.php?action=logout" class="logout-link">Logout</a>
         </nav>
       </div>
     </div>
@@ -269,11 +269,11 @@ if (isset($_SESSION['admin'])) {
           </div>
           <div class="form-group">
             <label>↔️ Pelimpahan - Wafat</label>
-            <input type="url" name="gdrive_transfer_suami_istri" placeholder="https://drive.google.com/drive/folders/..." value="<?php echo htmlspecialchars(getGDriveLink('transfer_suami_istri') ?? ''); ?>">
+            <input type="url" name="gdrive_transfer_wafat" placeholder="https://drive.google.com/drive/folders/..." value="<?php echo htmlspecialchars(getGDriveLink('transfer_suami_istri') ?? ''); ?>">
           </div>
           <div class="form-group">
             <label>↔️ Pelimpahan - Sakit Permanen</label>
-            <input type="url" name="gdrive_transfer_anak" placeholder="https://drive.google.com/drive/folders/..." value="<?php echo htmlspecialchars(getGDriveLink('transfer_anak') ?? ''); ?>">
+            <input type="url" name="gdrive_transfer_sakit" placeholder="https://drive.google.com/drive/folders/..." value="<?php echo htmlspecialchars(getGDriveLink('transfer_anak') ?? ''); ?>">
           </div>
         </div>
         <button class="btn btn-primary" type="submit" style="width:100%;margin-top:16px;">Simpan Link Google Drive</button>
